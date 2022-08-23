@@ -1,0 +1,24 @@
+{# The header #}
+
+<header>
+	<ul>
+		{% if current_user.is_authenticated %}
+			<li>
+				<a href="{{ url_for('user', user_id=current_user.id) }}">
+				{% if current_user.email %}
+					<img src="{{ current_user.email | gravatar(size=128) }}" alt="{{ current_user.email }}" />
+				{% endif %}
+				{{ current_user.username }}
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('networks') }}">
+					{{ current_user.memberships | count }} network(s)
+				</a>
+			</li>
+			<li><a href="{{ url_for('logout') }}">Log out</a></li>
+		{% else %}
+			<li>Not logged in</li>
+		{% endif %}
+	</ul>
+</header>

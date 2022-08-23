@@ -1,0 +1,207 @@
+{% extends "generic/page.html" %}
+
+{% block title %}
+	{% if network %}
+Freelan Server - Network: {{ network.name }}
+	{% else %}
+Freelan Server - New network
+	{% endif %}
+{% endblock %}
+
+{% block page %}
+	{% if network %}
+		<h1>Network: <b>{{ network.name }}</b></h1>
+	{% else %}
+		<h1>New network</h1>
+	{% endif %}
+
+	<div class="form-box">
+		{% if network %}
+			<form method="post" action="{{ url_for('network', network_id=network.id) }}">
+		{% else %}
+			<form method="post" action="{{ url_for('network/create') }}">
+		{% endif %}
+			{{ form.csrf_token }}
+
+			<fieldset>
+				<img class="avatar" src="{{ url_for('static', filename='images/menu/networks.png') }}" alt="A network icon" />
+
+				<div class="name-div">
+					{{ form.name.label }}
+					{% if current_user.admin_flag %}
+						{{ form.name(placeholder='Enter a name', autofocus='autofocus', class=form.name.errors and 'form-error' or '') }}
+					{% else %}
+						{{ form.name(placeholder='Enter a name', autofocus='autofocus', readonly='readonly', class=form.name.errors and 'form-error' or '') }}
+					{% endif %}
+
+					{% for error in form.name.errors %}
+						<span class="errormsg">{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				<div class="ipv4_address-div">
+					{{ form.ipv4_address.label }}
+					{% if current_user.admin_flag %}
+						{{ form.ipv4_address(placeholder='aaa.bbb.ccc.ddd/ee', class=form.ipv4_address.errors and 'form-error' or '') }}
+					{% else %}
+						{{ form.ipv4_address(placeholder='aaa.bbb.ccc.ddd/ee', readonly='readonly', class=form.ipv4_address.errors and 'form-error' or '') }}
+					{% endif %}
+
+					{% for error in form.ipv4_address.errors %}
+						<span class="errormsg">{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				<div class="ipv6_address-div">
+					{{ form.ipv6_address.label }}
+					{% if current_user.admin_flag %}
+						{{ form.ipv6_address(placeholder='aaaa:bbbb:cccc:dddd:eeee:ffff:gggg:hhhh/iii', class=form.ipv6_address.errors and 'form-error' or '') }}
+					{% else %}
+						{{ form.ipv6_address(placeholder='aaaa:bbbb:cccc:dddd:eeee:ffff:gggg:hhhh/iii', readonly='readonly', class=form.ipv6_address.errors and 'form-error' or '') }}
+					{% endif %}
+
+					{% for error in form.ipv6_address.errors %}
+						<span class="errormsg">{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				{% if form.members %}
+					<div class="members-div">
+						{{ form.members.label }}
+
+						<table class="membership">
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Member</th>
+									<th>IPv4 address</th>
+									<th>IPv6 address</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								{% for member_form in form.members %}
+									<tr>
+										<td>
+											{{ member_form.csrf_token }}
+											
+											{% if member_form.email.data %}
+												<img class="avatar" src="{{ member_form.email.data | gravatar(size=32) }}" alt="{{ member_form.email.data }}" />
+											{% endif %}
+
+											<a href="{{ url_for('user', user_id=member_form.user_id.data) }}">{{ member_form.username(element='strong') }}</a>
+										</td>
+
+										<td>
+											<label>
+												{{ member_form.is_member(class=member_form.is_member.errors and 'form-error' or None) }}
+											</label>
+
+											{% for error in member_form.is_member.errors %}
+												<span class="errormsg">{{ error }}</span>
+											{% endfor %}
+										</td>
+
+										<td>
+											{% if current_user.admin_flag %}
+												{{ member_form.ipv4_address(placeholder='aaa.bbb.ccc.ddd', class=member_form.ipv4_address.errors and 'form-error' or '') }}
+											{% else %}
+												{{ member_form.ipv4_address(placeholder='aaa.bbb.ccc.ddd', readonly='readonly', class=member_form.ipv4_address.errors and 'form-error' or '') }}
+											{% endif %}
+
+											{% for error in member_form.ipv4_address.errors %}
+												<span class="errormsg">{{ error }}</span>
+											{% endfor %}
+										</td>
+
+										<td>
+											{% if current_user.admin_flag %}
+												{{ member_form.ipv6_address(placeholder='aaaa:bbbb:cccc:dddd:eeee:ffff:gggg:hhhh', class=member_form.ipv6_address.errors and 'form-error' or '') }}
+											{% else %}
+												{{ member_form.ipv6_address(placeholder='aaaa:bbbb:cccc:dddd:eeee:ffff:gggg:hhhh', readonly='readonly', class=member_form.ipv6_address.errors and 'form-error' or '') }}
+											{% endif %}
+
+											{% for error in member_form.ipv6_address.errors %}
+												<span class="errormsg">{{ error }}</span>
+											{% endfor %}
+										</td>
+									</tr>
+
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="members-div">
+						<label>Members</label>
+
+						{% if not network.memberships %}
+							<p class="empty"><em>The network does not have any members.</em></p>
+						{% else %}
+							<table class="membership">
+								<thead>
+									<tr>
+										<th>User</th>
+										<th>IPv4 address</th>
+										<th>IPv6 address</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									{% for member in network.members %}
+										{% if member.is_member %}
+											<tr>
+												<td>
+													<strong><a href="{{ url_for('user', user_id=member.user_id) }}">{{ member.username }}</a></strong>
+												</td>
+
+												<td>
+													{% if member.ipv4_address %}
+														<span class="ipv4_address">{{ member.ipv4_address }}</span>
+													{% else %}
+														<span class="ipv4_address empty">Automatic</span>
+													{% endif %}
+												</td>
+
+												<td>
+													{% if member.ipv6_address %}
+														<span class="ipv6_address">{{ member.ipv6_address }}</span>
+													{% else %}
+														<span class="ipv6_address empty">Automatic</span>
+													{% endif %}
+												</td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				<div class="submit-div">
+					{% if current_user.admin_flag %}
+						<input type="submit" value="{{ network and 'Update' or 'Create' }}" />
+					{% else %}
+						<input type="submit" value="{{ network and 'Update' or 'Create' }}" disabled="disabled" />
+					{% endif %}
+
+					<a class="button default" href="{{ referrer }}">Cancel</a>
+				</div>
+			</fieldset>
+		</form>
+
+		{% if network and current_user.admin_flag %}
+			<div class="dangerzone">
+				<h2>Danger zone</h2>
+
+				<form method="post" action="{{ url_for('network/delete', network_id=network.id) }}">
+					<h3>Delete this network</h3>
+
+					<input type="submit" value="Delete network" />
+					<p>The deleted network can <strong>not</strong> be recovered once deleted !</p>
+				</form>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

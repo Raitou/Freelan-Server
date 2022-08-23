@@ -1,0 +1,21 @@
+{% extends "generic/main.html" %}
+
+{% block content %}
+<div class="page-back">
+	{% include "elements/header.html" %}
+
+	<div class="page-container">
+		<div class="page-container-row">
+			<div class="page-menu">
+				{% include "elements/menu.html" %}
+			</div>
+
+			<div class="page-content">
+				{% block page %}{% endblock %}
+
+				{% include "elements/footer.html" %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "generic/page.html" %}
+
+{% block title %}Freelan Server - Settings overview{% endblock %}
+
+{% block page %}
+	<h1>Settings overview</h1>
+
+	<p>Here are the current settings for your server.</p>
+
+	<p class="information">Those settings are read-only for security reasons and thus <strong>cannot</strong> be changed within the web application.</p>
+
+	<h2>Authority certificate</h2>
+
+	<p>Filename: <code>{{ authority_certificate_file }}</code></p>
+
+	{% if authority_certificate %}
+
+		<div class="collapsable" data-collapsed-text="Show certificate">
+		{{ authority_certificate | x509_certificate }}
+		</div>
+
+	{% else %}
+
+		<p class="error">The certificate could not be loaded. Error was: <strong>{{ authority_certificate_error }}</strong></p>
+
+	{% endif %}
+
+	<h2>Authority private key</h2>
+
+	<p>Filename: <code>{{ authority_private_key_file }}</code></p>
+
+	{% if authority_private_key %}
+
+		<p class="success">Private key loaded successfully.</p>
+		
+	{% else %}
+
+		<p class="error">The private key could not be loaded. Error was: <strong>{{ authority_private_key_error }}</strong></p>
+
+	{% endif %}
+
+{% endblock %}

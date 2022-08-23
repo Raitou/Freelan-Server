@@ -1,0 +1,68 @@
+{# The login page #}
+
+{% extends "generic/main.html" %}
+
+{% block title %}Freelan Server - Login{% endblock %}
+
+{% block content %}
+
+<div class="form-box login-box">
+	<h2>Log in</h2>
+
+	<form method="post" action="{{ url_for('login', next=next) }}">
+		{{ form.csrf_token }}
+
+		<fieldset>
+			<div class="username-div">
+				{{ form.username.label }}
+				{{ form.username(placeholder='Enter your username', autofocus='autofocus', class=form.username.errors and 'form-error' or None) }}
+
+				{% for error in form.username.errors %}
+					<span class="errormsg">{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			<div class="password-div">
+				{{ form.password.label }}
+				{{ form.password(placeholder='Enter your password', class=form.password.errors and 'form-error' or None) }}
+
+				{% for error in form.password.errors %}
+					<span class="errormsg">{{ error }}</span>
+				{% endfor %}
+			</div>
+
+			{% if form.recaptcha %}
+				<div class="recaptcha-div">
+					{{ form.recaptcha.label }}
+					{{ form.recaptcha }}
+
+					{% for error in form.recaptcha.errors %}
+						<span class="errormsg">{{ error }}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<input type="submit" value="Log in" />
+
+			<label class="remember">
+				{{ form.remember_me(class=form.remember_me.errors and 'form-error' or None) }}
+				<strong>{{ form.remember_me.label.text }}</strong>
+
+				{% for error in form.remember_me.errors %}
+					<span class="errormsg">{{ error }}</span>
+				{% endfor %}
+			</label>
+		</fieldset>
+	</form>
+</div>
+
+{% if register_enabled %}
+	<div class="comment-box">
+		<p>Not registered ? Click <a href="{{ url_for('register') }}">here</a> to change that !</p>
+	</div>
+{% endif %}
+
+{# The footer #}
+{% include 'elements/footer.html' %}
+
+{% endblock %}

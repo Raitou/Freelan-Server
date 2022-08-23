@@ -1,0 +1,231 @@
+{% extends "generic/page.html" %}
+
+{% block title %}
+	{% if user %}
+Freelan Server - User: {{ user.username }}
+	{% else %}
+Freelan Server - New user
+	{% endif %}
+{% endblock %}
+
+{% block page %}
+	{% if user %}
+		<h1>User: <b>{{ user.username }}</b></h1>
+	{% else %}
+		<h1>New user</h1>
+	{% endif %}
+
+	<div class="form-box">
+		{% if user %}
+			<form method="post" action="{{ url_for('user', user_id=user.id) }}">
+		{% else %}
+			<form method="post" action="{{ url_for('user/create') }}">
+		{% endif %}
+			{{ form.csrf_token }}
+
+			<fieldset>
+				{% if user.email %}
+					<img class="avatar" src="{{ user.email | gravatar(size=128) }}" alt="{{ user.email }}" />
+				{% endif %}
+
+				<div class="username-div">
+					{{ form.username.label }}
+					{% if current_user.admin_flag or (current_user == user) %}
+						{{ form.username(placeholder='Enter a username', autofocus='autofocus', class=form.username.errors and 'form-error' or '') }}
+					{% else %}
+						{{ form.username(placeholder='Enter a username', autofocus='autofocus', readonly='readonly', class=form.username.errors and 'form-error' or '') }}
+					{% endif %}
+
+					{% for error in form.username.errors %}
+						<span class="errormsg">{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				{% if form.admin_flag %}
+					<div class="admin-flag-div">
+						<label>
+							{{ form.admin_flag(class=form.admin_flag.errors and 'form-error' or '') }}
+							{{ form.admin_flag.label.text }}
+
+							{% for error in form.admin_flag.errors %}
+								<span class="errormsg">{{ error }}</span>
+							{% endfor %}
+						</label>
+					</div>
+				{% elif current_user.admin_flag %}
+					<div class="admin-flag-div">
+						<p class="information"><em>You have administrative privileges.</em></p>
+					</div>
+				{% endif %}
+
+				{% if form.current_password %}
+					<div class="current-password-div">
+						{{ form.current_password.label }}
+						{{ form.current_password(placeholder='Enter your current password', class=form.current_password.errors and 'form-error' or '') }}
+
+						{% for error in form.current_password.errors %}
+							<span class="errormsg">{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				{% if form.new_password %}
+					<div class="new-password-div">
+						{{ form.new_password.label }}
+						{{ form.new_password(placeholder='Enter the new password', class=form.new_password.errors and 'form-error' or '') }}
+
+						{% for error in form.new_password.errors %}
+							<span class="errormsg">{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				{% if form.new_password_repeat %}
+					<div class="new-password-repeat-div">
+						{{ form.new_password_repeat.label }}
+						{{ form.new_password_repeat(placeholder='Repeat the new password', class=form.new_password_repeat.errors and 'form-error' or '') }}
+
+						{% for error in form.new_password_repeat.errors %}
+							<span class="errormsg">{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				{% if form.email %}
+					<div class="email-div">
+						{{ form.email.label }}
+						{{ form.email(placeholder='Enter an email for the user', class=form.email.errors and 'form-error' or '') }}
+
+						{% for error in form.email.errors %}
+							<span class="errormsg">{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				{% if form.networks %}
+					<div class="networks-div">
+						{{ form.networks.label }}
+
+						<table class="membership">
+							<thead>
+								<tr>
+									<th>Network</th>
+									<th>Member</th>
+									<th>IPv4 address</th>
+									<th>IPv6 address</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								{% for network_form in form.networks %}
+									<tr>
+										<td>
+											{{ network_form.csrf_token }}
+											<a href="{{ url_for('network', network_id=network_form.network_id.data) }}">{{ network_form.network_name(element='strong') }}</a>
+										</td>
+
+										<td>
+											<label>
+												{{ network_form.is_member(class=network_form.is_member.errors and 'form-error' or None) }}
+											</label>
+
+											{% for error in network_form.is_member.errors %}
+												<span class="errormsg">{{ error }}</span>
+											{% endfor %}
+										</td>
+
+										<td>
+											{{ network_form.ipv4_address(placeholder='aaa.bbb.ccc.ddd', class=network_form.ipv4_address.errors and 'form-error' or '') }}
+
+											{% for error in network_form.ipv4_address.errors %}
+												<span class="errormsg">{{ error }}</span>
+											{% endfor %}
+										</td>
+
+										<td>
+											{{ network_form.ipv6_address(placeholder='aaaa:bbbb:cccc:dddd:eeee:ffff:gggg:hhhh', class=network_form.ipv6_address.errors and 'form-error' or '') }}
+
+											{% for error in network_form.ipv6_address.errors %}
+												<span class="errormsg">{{ error }}</span>
+											{% endfor %}
+										</td>
+									</tr>
+
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					<div class="networks-div">
+						<label>Networks</label>
+
+						{% if not user.memberships %}
+							<p class="empty"><em>The user does not belong to any network.</em></p>
+						{% else %}
+							<table class="membership">
+								<thead>
+									<tr>
+										<th>Network</th>
+										<th>IPv4 address</th>
+										<th>IPv6 address</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									{% for network in user.networks %}
+										{% if network.is_member %}
+											<tr>
+												<td>
+													<strong><a href="{{ url_for('network', network_id=network.network_id) }}">{{ network.network_name }}</a></strong>
+												</td>
+
+												<td>
+													{% if network.ipv4_address %}
+														<span class="ipv4_address">{{ network.ipv4_address }}</span>
+													{% else %}
+														<span class="ipv4_address empty">Automatic</span>
+													{% endif %}
+												</td>
+
+												<td>
+													{% if network.ipv6_address %}
+														<span class="ipv6_address">{{ network.ipv6_address }}</span>
+													{% else %}
+														<span class="ipv6_address empty">Automatic</span>
+													{% endif %}
+												</td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				<div class="submit-div">
+					{% if current_user.admin_flag or (current_user == user) %}
+						<input type="submit" value="{{ user and 'Update' or 'Create' }}" />
+					{% else %}
+						<input type="submit" value="{{ user and 'Update' or 'Create' }}" disabled="disabled" />
+					{% endif %}
+
+					<a class="button default" href="{{ referrer }}">Cancel</a>
+				</div>
+			</fieldset>
+		</form>
+
+		{% if user and current_user.admin_flag and (current_user != user) %}
+			<div class="dangerzone">
+				<h2>Danger zone</h2>
+
+				<form method="post" action="{{ url_for('user/delete', user_id=user.id) }}">
+					<h3>Delete this user</h3>
+
+					<input type="submit" value="Delete user" />
+					<p>The deleted user can <strong>not</strong> be recovered once deleted !</p>
+				</form>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

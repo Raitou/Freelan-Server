@@ -1,0 +1,503 @@
+/* Main stylesheet */
+
+body, div, h1, form, fieldset, input, textarea {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: none;
+}
+
+html {
+	height: 100%; /* Needed on some browsers for the gradient to work. */
+}
+
+body {
+	background: #728eaa;
+	background: linear-gradient(top, #25303C 0%, #728EAA 100%);
+	background: -moz-linear-gradient(top, #25303C 0%, #728EAA 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#25303C), color-stop(100%,#728EAA)); /* webkit */
+	font-family: Verdana, Arial, sans-serif;
+}
+
+/* The notification box */
+
+#notification_box {
+	font-size: 16px;
+	line-height: 26px;
+	width: 80%;
+	padding: 15px 10% 2px 10%;
+	z-index: 250;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background: white;
+	background: rgba(255, 255, 255, 0.85);
+	box-shadow: 0 1px 10px #9c9c9c;
+	-moz-box-shadow: 0 1px 10px #9c9c9c;
+	-webkit-box-shadow: 0 1px 10px #9c9c9c;
+}
+
+#notification_box > p {
+	margin: 0 0 1em 0;
+	padding: 0 0 0 34px;
+	border: none;
+	display: block;
+}
+
+#notification_box > p.error {
+	background: transparent url('../images/notification/error.png') no-repeat 0 50%;
+}
+
+#notification_box > p.info{
+	background: transparent url('../images/notification/info.png') no-repeat 0 50%;
+}
+
+#notification_box > p.denied{
+	background: transparent url('../images/notification/denied.png') no-repeat 0 50%;
+}
+
+#notification_box > div.notification_close {
+	margin: 0;
+	padding: 0 0 0 34px;
+	border: none;
+	font-size: 10px;
+	font-weight: normal;
+	color: #999;
+	cursor: pointer;
+}
+
+/* The information box */
+
+#information_box {
+	text-align: right;
+	font-size: 12px;
+	line-height: 26px;
+	width: 100%;
+	padding: 0px 0px;
+	z-index: 250;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	color: white;
+	background: black;
+	background: rgba(0, 0, 0, 0.85);
+	box-shadow: 0 -1px 10px #9c9c9c;
+	-moz-box-shadow: 0 -1px 10px #9c9c9c;
+	-webkit-box-shadow: 0 -1px 10px #9c9c9c;
+}
+
+#information_box strong {
+	color: #ffa5a5;
+}
+
+#information_box a,
+#information_box a:visited {
+	text-decoration: none;
+	color: #ffa500;
+	font-weight: bold;
+}
+
+#information_box a:hover {
+	color: white;
+}
+
+#information_box #avatar_box,
+#information_box #logout_box,
+#information_box #user_box {
+	float: left;
+	margin-left: 4px;
+}
+
+#information_box #avatar_box img {
+	width: 12px;
+	height: 12px;
+}
+
+/* The login box */
+
+#login_box {
+	width: 430px;
+	margin: 60px auto 60px auto;
+	padding: 60px 30px;
+	background: #c9d0de;
+	border: 1px solid #e1e1e1;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	box-shadow: 0px 0px 8px #444;
+	-moz-box-shadow: 0px 0px 8px #444;
+	-webkit-box-shadow: 0px 0px 8px #444;
+}
+
+#login_box h1 {
+	font-size: 35px;
+	color: #445668;
+	text-transform: uppercase;
+	text-align: center;
+	margin: 0 0 35px 0;
+	text-shadow: 0px 1px 0px #f2f2f2;
+}
+
+#login_box label {
+	float: left;
+	clear: left;
+	margin: 11px 20px 0 0;
+	width: 95px;
+	text-align: right;
+	font-size: 16px;
+	color: #445668;
+	text-transform: uppercase;
+	text-shadow: 0px 1px 0px #f2f2f2;
+}
+
+#login_box input {
+	width: 260px;
+	height: 35px;
+	padding: 5px 20px 0px 20px;
+	margin: 0 0 20px 0;
+	background: #5E768D;
+	background: -moz-linear-gradient(top, #546A7F 0%, #5E768D 20%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#546A7F), color-stop(20%,#5E768D)); /* webkit */
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0px 1px 0px #f2f2f2;
+	-webkit-box-shadow: 0px 1px 0px #f2f2f2;
+	font-size: 16px;
+	color: #f2f2f2;
+	text-shadow: 0px -1px 0px #334f71;
+}
+
+#login_box input[type="checkbox"] {
+	width: auto;
+}
+
+#login_box input::-webkit-input-placeholder,
+#login_box input:-moz-placeholder {
+		color: #a1b2c3;
+		text-shadow: 0px -1px 0px #38506b;
+		text-transform: uppercase;
+}
+
+#login_box textarea {
+	width: 260px;
+	height: 170px;
+	padding: 12px 20px 0px 20px;
+	margin: 0 0 20px 0;
+	background: #5E768D;
+	background: -moz-linear-gradient(top, #546A7F 0%, #5E768D 20%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#546A7F), color-stop(20%,#5E768D)); /* webkit */
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 1px 0px #f2f2f2;
+	-moz-box-shadow: 0px 1px 0px #f2f2f2;
+	-webkit-box-shadow: 0px 1px 0px #f2f2f2;
+	font-size: 16px;
+	color: #f2f2f2;
+	text-transform: uppercase;
+	text-shadow: 0px -1px 0px #334f71;
+}
+
+#login_box textarea::-webkit-input-placeholder {
+	color: #a1b2c3;
+	text-shadow: 0px -1px 0px #38506b;
+}
+
+#login_box textarea:-moz-placeholder {
+	color: #a1b2c3;
+	text-shadow: 0px -1px 0px #38506b;
+}
+
+#login_box input:focus,
+#login_box textarea:focus {
+	background: #728eaa;
+	background: -moz-linear-gradient(top, #668099 0%, #728eaa 20%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#668099), color-stop(20%,#728eaa)); /* webkit */
+}
+
+#login_box input[type=submit] {
+	width: 185px;
+	height: 52px;
+	float: right;
+	padding: 10px 15px;
+	margin: 0 15px 0 0;
+	box-shadow: 0px 0px 5px #999;
+	-moz-box-shadow: 0px 0px 5px #999;
+	-webkit-box-shadow: 0px 0px 5px #999;
+	border: 1px solid #556f8c;
+	background: -moz-linear-gradient(top, #718DA9 0%, #415D79 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#718DA9), color-stop(100%,#415D79)); /* webkit */
+	cursor: pointer;
+}
+
+/* The tiles */
+
+.tile_list {
+	text-align: center;
+}
+
+a.tile {
+	display: inline-block;
+	margin: 0;
+	padding: 8px;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	color: black !important;
+	background: #ddd;
+	border: none;
+	border-radius: 8px;
+	opacity: 0.8;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	box-shadow: 0px 0px 16px #444;
+	-moz-box-shadow: 0px 0px 16px #444;
+	-webkit-box-shadow: 0px 0px 16px #444;
+}
+
+a.tile:hover {
+	opacity: 1;
+	background: white;
+}
+
+a.tile.fade {
+	opacity: 0.2;
+}
+
+a.tile.fade:hover {
+	opacity: 0.3;
+}
+
+a.tile span {
+	display: table-cell;
+	width: 132px;
+	height: 132px;
+	vertical-align: bottom;
+}
+
+a.tile span.user {
+	height: 148px;
+	background: url('../images/menu/profile.png') 50% 0 no-repeat;
+}
+
+a.tile span.user img {
+	margin-bottom: 4px;
+	border: 1px gray solid;
+}
+
+a.tile span.user span.admin {
+	float: left;
+	display: inline-block;
+	margin-right: -16px;
+	width: 16px;
+	height: 16px;
+	background: url('../images/flags/admin.png') 50% 50% no-repeat;
+}
+
+a.tile span.create_user {
+	background: url('../images/menu/create_user.png') 50% 0 no-repeat;
+}
+
+a.tile span.network {
+	height: 148px;
+	background: url('../images/menu/networks.png') 50% 0 no-repeat;
+}
+
+a.tile span.network img {
+	margin-bottom: 4px;
+	border: 1px gray solid;
+}
+
+a.tile span.create_network {
+	background: url('../images/menu/create_user.png') 50% 0 no-repeat;
+}
+
+a.tile span.back {
+	background: url('../images/menu/back.png') 50% 50% no-repeat;
+}
+
+a.tile span.home {
+	background: url('../images/menu/home.png') 50% 50% no-repeat;
+}
+
+a.tile span.users {
+	background: url('../images/menu/users.png') 50% 50% no-repeat;
+}
+
+a.tile span.networks {
+	background: url('../images/menu/networks.png') 50% 50% no-repeat;
+}
+
+a.tile span.profile {
+	background: url('../images/menu/profile.png') 50% 50% no-repeat;
+}
+
+a.tile span.settings {
+	background: url('../images/menu/settings.png') 50% 50% no-repeat;
+}
+
+a.tile span.status{
+	background: url('../images/menu/status.png') 50% 50% no-repeat;
+}
+
+a.tile span.logout {
+	background: url('../images/menu/logout.png') 50% 50% no-repeat;
+}
+
+.tiles_box {
+	margin: 60px auto 60px auto;
+	padding: 0;
+	list-style: none;
+}
+
+.tiles_box li {
+	display: inline-block;
+	margin-right: 4px;
+	margin-bottom: 4px;
+}
+
+#mainmenu {
+	margin: 0 auto;
+	max-width: 50%;
+	text-align: center;
+}
+
+#submenu {
+	text-align: center;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 140px;
+	padding: 8px;
+	border-right: 1px black solid;
+	background: #829eba;
+}
+
+#submenu h1 {
+	text-align: center;
+	margin: -8px -8px 8px -8px;
+	padding: 4px 0;
+	font-size: 16px;
+	background: black;
+	color: white;
+}
+
+#submenu a.tile {
+	margin-bottom: 8px;
+}
+
+#submenu_content {
+	margin: 8px 8px 8px 164px;
+	color: white;
+}
+
+#submenu_content h1 {
+	text-align: center;
+	margin: -8px -8px 8px -8px;
+	padding: 4px 0;
+	font-size: 16px;
+	background: black;
+	color: white;
+}
+
+#submenu_content h2 {
+	border-bottom: 4px #ffa500 solid;
+	text-transform: uppercase;
+}
+
+#submenu_content h2:first-letter {
+	color: #ffa500;
+	font-size: 120%;
+}
+
+#submenu_content a,
+#submenu_content a:visited {
+	color: #ffa500;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#submenu_content a:hover {
+	color: white;
+}
+
+#submenu_content strong {
+	color: #ffa5a5;
+}
+
+#submenu_content p {
+	margin: 0 0 1em 0;
+}
+
+#submenu_content fieldset {
+	clear: left;
+}
+
+#submenu_content label {
+	height: 24px;
+	width: 200px;
+	display: inline-block;
+	margin: 0 4px 4px 0;
+	padding: 0;
+	float: left;
+	clear: left;
+}
+
+#submenu_content input {
+	float: left;
+	height: 24px;
+	width: 300px;
+	margin: 0 0 4px 0;
+	padding: 4px 12px;
+	border-radius: 24px;
+	border: 2px #333 solid;
+	background: white;
+	-moz-border-radius: 24px;
+	-webkit-border-radius: 24px;
+	box-shadow: 0px 0px 16px #444;
+	-moz-box-shadow: 0px 0px 16px #444;
+	-webkit-box-shadow: 0px 0px 16px #444;
+	box-shadow: inset 0px 0px 4px #444;
+	-moz-box-shadow: inset 0px 0px 4px #444;
+	-webkit-box-shadow: inset 0px 0px 4px #444;
+}
+
+#submenu_content input:focus {
+	border-color: #ffa500;
+	background: #ffe0e0;
+}
+
+#submenu_content input:read-only {
+	background: #aaa;
+}
+
+#submenu_content input[type=checkbox] {
+	width: auto;
+}
+
+#submenu_content input[type=reset],
+#submenu_content input[type=submit] {
+	margin: 0 4px 0 0;
+	height: 32px;
+	width: 264px;
+	cursor: pointer;
+}
+
+#submenu_content input[type=reset]:hover,
+#submenu_content input[type=submit]:hover {
+	background: #ffe0a5;
+}
+
+#submenu_content input[type=reset].danger,
+#submenu_content input[type=submit].danger {
+	background: #ffc0c0;
+}
+
+#submenu_content input[type=reset].danger:hover,
+#submenu_content input[type=submit].danger:hover {
+	background: #ffa5a5;
+}
+
+
